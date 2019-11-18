@@ -10,4 +10,4 @@ module.exports = {
 		INACTIVE_BUFFER_FILE_EXTENSION: 'stored',
 		ACTIVE_BUFFER_MAX_SIZE: process.env.ACTIVE_BUFFER_MAX_SIZE || '64k'
 	}
-}
+};

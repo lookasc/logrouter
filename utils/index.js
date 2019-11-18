@@ -21,8 +21,8 @@ var convertSizeStringToByteNumber = function (inputString) {
 		console.error(error);
 	}
 	return size;
-}
+};
 
 module.exports = {
 	convertSizeStringToByteNumber
-}
+};

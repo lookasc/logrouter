@@ -1,11 +1,10 @@
-const { FILES } = require('../config');
 const Buffer = require('./buffer');
 const indexGenerator = require('ulid').monotonicFactory();
 
 class BufferController {
 
 	constructor() {
-		console.log('Creating new file buffer controller')
+		console.log('Creating new file buffer controller');
 		this.activeBuffer = new Buffer(indexGenerator);
 		this.exchangingBufferNow = false;
 	}
