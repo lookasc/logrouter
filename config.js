@@ -4,14 +4,10 @@ module.exports = {
 		REMOTE_PORT: process.env.UDP_REMOTE_PORT || 67,
 		REMOTE_HOST: process.env.UDP_REMOTE_HOST || 'localhost'
 	},
-	STORE: {
-		DIR: process.env.STORE_DIR || './data/'
-	},
-	INGEST: {
+	FILES: {
+		DIR: process.env.STORE_DIR || './data/',
 		ACTIVE_BUFFER_FILE_EXTENSION: 'active',
+		INACTIVE_BUFFER_FILE_EXTENSION: 'stored',
 		ACTIVE_BUFFER_MAX_SIZE: process.env.ACTIVE_BUFFER_MAX_SIZE || '64k'
-	},
-	FLUSH: {
-
 	}
 }

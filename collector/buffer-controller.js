@@ -1,38 +1,36 @@
-const { INGEST } = require('../config');
+const { FILES } = require('../config');
 const Buffer = require('./buffer');
-const { convertSizeStringToByteNumber } = require('../utils');
+const indexGenerator = require('ulid').monotonicFactory();
 
-var BufferController = function () {
-	this.activeBuffer = new Buffer();
-	this.maxSize = convertSizeStringToByteNumber(INGEST.ACTIVE_BUFFER_MAX_SIZE);
-	this.isChangingBuffer = false;
-}
+class BufferController {
 
-BufferController.prototype.write = function (data) {
-	let shouldRolloverBuffer = (!this.isChangingBuffer && isBufferOverloaded.call(this));
-
-	if (shouldRolloverBuffer) {
-		this.isChangingBuffer = true;
-		this.rolloverBuffer(() => {
-			this.isChangingBuffer = false;
-		});
+	constructor() {
+		console.log('Creating new file buffer controller')
+		this.activeBuffer = new Buffer(indexGenerator);
+		this.exchangingBufferNow = false;
 	}
 
-	this.activeBuffer.write(data);
-}
+	write(data) {
+		let shouldRolloverBuffer = (!this.exchangingBufferNow && this.activeBuffer.isOverloaded());
+		if (shouldRolloverBuffer) {
+			this.rolloverBuffer();
+		}
+		this.activeBuffer.write(data);
+	}
 
-BufferController.prototype.rolloverBuffer = function (callback) {
-	let newBuffer = new Buffer();
-	newBuffer.get().on('ready', () => {
-		let lastBuffer = this.activeBuffer;
-		this.activeBuffer = newBuffer;
-		lastBuffer.close();
-		callback();
-	});
-}
+	rolloverBuffer() {
+		this.exchangingBufferNow = true;
+		let newBuffer = new Buffer(indexGenerator);
+		newBuffer
+			.waitUntilReady()
+			.then(() => {
+				let oldBuffer = this.activeBuffer;
+				this.activeBuffer = newBuffer;
+				oldBuffer.close();
+				this.exchangingBufferNow = false;
+			});
+	}
 
-var isBufferOverloaded = function () {
-	return (this.activeBuffer.size >= this.maxSize);
 }
 
 module.exports = BufferController;

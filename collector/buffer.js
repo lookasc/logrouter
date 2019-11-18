@@ -1,40 +1,48 @@
-const { INGEST, STORE } = require('../config');
-const { createWriteStream } = require('fs');
+const { FILES } = require('../config');
+const { createWriteStream, rename } = require('fs');
+const { convertSizeStringToByteNumber } = require('../utils');
 
-var Buffer = function () {
-	this.size = 0;
-	this.name = null;
-	this.stream = null;
-	createNewActiveBuffer.call(this);
-}
+class Buffer {
 
-Buffer.prototype.write = function (data) {
-	this.size += data.length;
-	console.log(this.size);
-	this.stream.write(data + '\n');
-}
+	constructor(generateULID) {
+		let timestamp = Date.now();
+		let ulid = generateULID(timestamp);
+		let extension = FILES.ACTIVE_BUFFER_FILE_EXTENSION;
 
-Buffer.prototype.close = function () {
-	this.stream.end(() => {
-		console.log(`File buffer closed: ${this.name}`);
-	});
-}
+		this.size = 0;
+		this.maxSize = convertSizeStringToByteNumber(FILES.ACTIVE_BUFFER_MAX_SIZE);
+		this.name = `${FILES.DIR}${timestamp}.${ulid}.${extension}`;
+		this.stream = createWriteStream(this.name);
+	}
 
-Buffer.prototype.get = function () {
-	return this.stream;
-}
+	write(data) {
+		this.size += data.length;
+		this.stream.write(data + '\n');
+	}
 
-var createNewActiveBuffer = function () {
-	let dir = STORE.DIR;
-	this.name = `${dir}${getNewActiveBufferFileName()}`;
-	this.stream = createWriteStream(this.name);
-}
+	close() {
+		this.stream.end(() => this.deactivate());
+	}
 
-var getNewActiveBufferFileName = function () {
-	let timestamp = Date.now();
-	let random = Math.floor(Math.random()*10000000000000);
-	let extension = INGEST.ACTIVE_BUFFER_FILE_EXTENSION;
-	return `${timestamp}.${random}.${extension}`;
+	deactivate() {
+		let strToReplace = new RegExp(FILES.ACTIVE_BUFFER_FILE_EXTENSION, 'g');
+		let oldName = `${this.name}`;
+		let newName = oldName.replace(strToReplace, FILES.INACTIVE_BUFFER_FILE_EXTENSION);
+		rename(oldName, newName, (err) => {
+			if (err) throw new Error(err);
+		});
+	}
+
+	isOverloaded() {
+		return (this.size >= this.maxSize);
+	}
+
+	waitUntilReady() {
+		return new Promise(resolve => {
+			this.stream.on('ready', () => resolve());
+		});
+	}
+	
 }
 
 module.exports = Buffer;
