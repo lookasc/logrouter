@@ -9,5 +9,8 @@ module.exports = {
 		ACTIVE_BUFFER_FILE_EXTENSION: 'active',
 		INACTIVE_BUFFER_FILE_EXTENSION: 'stored',
 		ACTIVE_BUFFER_MAX_SIZE: process.env.ACTIVE_BUFFER_MAX_SIZE || '64k'
+	},
+	PUBLISH: {
+		ENCRYPT_DATA: process.env.ENCRYPT_DATA || false
 	}
 };

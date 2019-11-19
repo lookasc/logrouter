@@ -20,7 +20,7 @@ class Buffer {
 		this.stream.write(data + '\n');
 	}
 
-	close() {
+	close(callback) {
 		this.stream.end(() => this.deactivate());
 	}
 

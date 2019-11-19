@@ -1,5 +1,6 @@
 const Buffer = require('./buffer');
 const indexGenerator = require('ulid').monotonicFactory();
+const publishController = require('../publisher/publish-controller');
 
 class BufferController {
 
@@ -25,7 +26,9 @@ class BufferController {
 			.then(() => {
 				let oldBuffer = this.activeBuffer;
 				this.activeBuffer = newBuffer;
-				oldBuffer.close();
+				oldBuffer.close(storedBufferName => {
+					publishController.enqueueFile(storedBufferName);
+				});
 				this.exchangingBufferNow = false;
 			});
 	}
