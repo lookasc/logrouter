@@ -1,6 +1,6 @@
 const Buffer = require('./buffer');
 const indexGenerator = require('ulid').monotonicFactory();
-const publishController = require('../publisher/publish-controller');
+const PublishController = require('./publish-controller');
 
 class BufferController {
 
@@ -8,6 +8,7 @@ class BufferController {
 		console.log('Creating new file buffer controller');
 		this.activeBuffer = new Buffer(indexGenerator);
 		this.exchangingBufferNow = false;
+		this.publishController = new PublishController();
 	}
 
 	write(data) {
@@ -27,7 +28,7 @@ class BufferController {
 				let oldBuffer = this.activeBuffer;
 				this.activeBuffer = newBuffer;
 				oldBuffer.close(storedBufferName => {
-					publishController.enqueueFile(storedBufferName);
+					this.publishController.dispatch(storedBufferName);
 				});
 				this.exchangingBufferNow = false;
 			});

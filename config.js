@@ -10,7 +10,8 @@ module.exports = {
 		INACTIVE_BUFFER_FILE_EXTENSION: 'stored',
 		ACTIVE_BUFFER_MAX_SIZE: process.env.ACTIVE_BUFFER_MAX_SIZE || '64k'
 	},
-	PUBLISH: {
-		ENCRYPT_DATA: process.env.ENCRYPT_DATA || false
+	ENCRYPT: {
+		ENABLED: process.env.ENCRYPT_DATA || true,
+		PASSWORD: process.env.ENCRYPT_PASSWORD || 'testPass'
 	}
 };

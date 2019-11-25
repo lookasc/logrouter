@@ -1,4 +1,3 @@
-const BufferController = require('./buffer-controller');
 const CollectorServer = require('./collector-server');
 
 class Collector {
@@ -7,7 +6,6 @@ class Collector {
 
 	start() {
 		console.log('Starting log collector');
-		this.ingestDataBuffer = new BufferController();
 		this.server = new CollectorServer(this.ingestDataBuffer);
 	}
 

@@ -21,15 +21,21 @@ class Buffer {
 	}
 
 	close(callback) {
-		this.stream.end(() => this.deactivate());
+		this.stream.end(() => {
+			this.deactivate()
+				.then(callback);
+		});
 	}
 
 	deactivate() {
-		let strToReplace = new RegExp(FILES.ACTIVE_BUFFER_FILE_EXTENSION, 'g');
-		let oldName = `${this.name}`;
-		let newName = oldName.replace(strToReplace, FILES.INACTIVE_BUFFER_FILE_EXTENSION);
-		rename(oldName, newName, (err) => {
-			if (err) throw new Error(err);
+		return new Promise(resolve => {
+			let strToReplace = new RegExp(FILES.ACTIVE_BUFFER_FILE_EXTENSION, 'g');
+			let oldName = `${this.name}`;
+			let newName = oldName.replace(strToReplace, FILES.INACTIVE_BUFFER_FILE_EXTENSION);
+			rename(oldName, newName, (err) => {
+				if (err) throw new Error(err);
+				resolve(newName);
+			});
 		});
 	}
 
