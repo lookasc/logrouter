@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
 	UDP: {
 		LISTEN_PORT: process.env.UDP_LISTEN_PORT || 67,
 		REMOTE_PORT: process.env.UDP_REMOTE_PORT || 67,
@@ -15,6 +15,8 @@ module.exports = {
 		ENABLED: process.env.ENCRYPT_DATA || true,
 		PASSWORD: process.env.ENCRYPT_PASSWORD || 'testPass',
 		PASSWORD_HASH_ALGHORITM: 'sha256',
-		ALGORITHM: 'aes-256-cbc'
+		ALGORITHM: 'aes-256-cbc',
 	}
 };
+
+module.exports = config;
