@@ -4,10 +4,10 @@ const BufferController = require('./buffer-controller');
 
 class CollectorServer {
 
-	constructor(ingestDataBuffer) {
+	constructor() {
 		console.log('Starting log collector server');
 		this.server = dgram.createSocket('udp4');
-		this.ingestDataBuffer = new BufferController();;
+		this.ingestDataBuffer = new BufferController();
 
 		this.server.on('listening', () => {
 			let address = this.server.address();

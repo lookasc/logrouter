@@ -19,7 +19,7 @@ class RecipientUdpClient {
 			if (err) process.send(err);
 			if (--this.messageCounter === 0 && this.isInputClosed) {
 				this.event.emit('allItemsSent');
-			};
+			}
 		});
 	}
 

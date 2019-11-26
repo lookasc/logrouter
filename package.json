@@ -15,7 +15,8 @@
     "nyc": "^14.1.1"
   },
   "scripts": {
-    "lint": "eslint --fix \"./**/*.js\"",
+    "lint": "eslint \"./**/*.js\"",
+    "lint-fix": "eslint --fix \"./**/*.js\"",
     "test": "nyc --reporter=html --reporter=text mocha **/*.test.js --bail --timeout 3000 --exit",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "docker build --label logrouter --tag logrouter ."

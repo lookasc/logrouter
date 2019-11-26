@@ -19,7 +19,7 @@ class PublishController {
 		let message = {
 			type: 'newFile',
 			fileName: fileName
-		}
+		};
 		this.dispatcherProcess.send(message);
 	}
 

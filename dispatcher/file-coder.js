@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const ENCRYPT_KEY = crypto
 	.createHash(ENCRYPT.PASSWORD_HASH_ALGHORITM)
 	.update(ENCRYPT.PASSWORD)
-	.digest()
+	.digest();
 
 class FileCoder {
 
@@ -18,15 +18,15 @@ class FileCoder {
 
 	encryptFile() {
 		let lineByLineReader = createInterface({
-		input: createReadStream(this.inputFileName),
-		crlfDelay: Infinity
+			input: createReadStream(this.inputFileName),
+			crlfDelay: Infinity
 		});
 
 		lineByLineReader.on('line', (line) => {
 			this.encryptedFileStream.write(`${this.encrypt(line)}\n`);
 		});
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			lineByLineReader.on('close', () => {
 				resolve(this.encryptedFileName);
 			});

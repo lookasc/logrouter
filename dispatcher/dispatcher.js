@@ -1,5 +1,5 @@
 const RecipientUdpClient = require('./recipient-udp-client');
-const { createReadStream, createWriteStream } = require('fs');
+const { createReadStream } = require('fs');
 const { createInterface } = require('readline');
 
 class Dispatcher {
@@ -23,7 +23,7 @@ class Dispatcher {
 			this.udpClient.lockInput();
 		});
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			this.udpClient.onAllItemsSent(() => {
 				resolve(this.encryptedFileName);
 			});
