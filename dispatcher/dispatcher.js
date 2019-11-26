@@ -19,9 +19,13 @@ class Dispatcher {
 			this.udpClient.send(line);
 		});
 
+		lineByLineReader.on('close', () => {
+			this.udpClient.isSendingLocked = true;
+		});
+
 		return new Promise((resolve, reject) => {
-			lineByLineReader.on('close', () => {
-				// this.udpClient.close();
+			this.udpClient.event.on('allItemsSent', () => {
+				this.udpClient.close();
 				resolve(this.encryptedFileName);
 			});
 		});
