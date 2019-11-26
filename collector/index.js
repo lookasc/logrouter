@@ -2,11 +2,9 @@ const CollectorServer = require('./collector-server');
 
 class Collector {
 
-	constructor() {	}
-
-	start() {
+	constructor() {
 		console.log('Starting log collector');
-		this.server = new CollectorServer(this.ingestDataBuffer);
+		this.server = new CollectorServer();
 	}
 
 }
