@@ -1,30 +1,32 @@
 const FileCoder = require('./file-coder');
 const Dispatcher = require('./dispatcher');
+const { unlink } = require('fs');
+
 process.send('Dispatcher started');
 
 process.on('message', (message) => {
-	parseMessage(message);
-});
+	let receivedNewFile = (message && message.type === 'newFile');
+	let storedFileName = message.fileName;
 
-function parseMessage(message) {
-	if (!message || !message.type) return;
-
-	if (message.type === 'newFile') {
-
-		new FileCoder(message.fileName)
+	if (receivedNewFile) {
+		new FileCoder(storedFileName)
 			.encryptFile()
 			.then(encryptedFileName => {
-				process.send(`Encrypting of ${encryptedFileName} finished`);
 				return new Dispatcher(encryptedFileName).sendPartedFile();
 			})
 			.then(encryptedFileName => {
-				process.send(`Dispatching of ${encryptedFileName} finished`)
+				deleteProcessedFiles([storedFileName, encryptedFileName]);
+			})
+			.catch(error => {
+				process.send(`Dispatcher error: ${error}`);
 			});
-
 	}
+});
+
+function deleteProcessedFiles(files) {
+	files.forEach(file => {
+		unlink(file, error => {
+			if (error) throw new Error(error);
+		});
+	});
 }
-
-
-
-
-

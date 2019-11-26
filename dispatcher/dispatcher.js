@@ -20,12 +20,11 @@ class Dispatcher {
 		});
 
 		lineByLineReader.on('close', () => {
-			this.udpClient.isSendingLocked = true;
+			this.udpClient.lockInput();
 		});
 
 		return new Promise((resolve, reject) => {
-			this.udpClient.event.on('allItemsSent', () => {
-				this.udpClient.close();
+			this.udpClient.onAllItemsSent(() => {
 				resolve(this.encryptedFileName);
 			});
 		});

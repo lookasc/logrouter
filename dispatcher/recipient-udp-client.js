@@ -6,16 +6,18 @@ class RecipientUdpClient {
 
 	constructor() {
 		this.udpClient = dgram.createSocket('udp4');
-		this.isSendingLocked = false;
+		this.isInputClosed = false;
 		this.event = new EventEmitter();
 		this.messageCounter = 0;
 	}
 
 	send(message) {
+		if (this.isInputClosed) return;
+
 		this.messageCounter++;
 		this.udpClient.send(message, 0, message.length, UDP.REMOTE_PORT, UDP.REMOTE_HOST, (err) => {
 			if (err) process.send(err);
-			if (--this.messageCounter === 0) {
+			if (--this.messageCounter === 0 && this.isInputClosed) {
 				this.event.emit('allItemsSent');
 			};
 		});
@@ -23,6 +25,17 @@ class RecipientUdpClient {
 
 	close() {
 		this.udpClient.close();
+	}
+
+	lockInput() {
+		this.isInputClosed = true;
+	}
+
+	onAllItemsSent(callback) {
+		this.event.on('allItemsSent', () => {
+			this.close();
+			callback();
+		});
 	}
 
 }
