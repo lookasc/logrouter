@@ -1,4 +1,4 @@
 require('dotenv').config();
-const Collector = require('./collector/collector');
+const Collector = require('./collector');
 
 new Collector().start();

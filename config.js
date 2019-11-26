@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
 	UDP: {
 		LISTEN_PORT: process.env.UDP_LISTEN_PORT || 67,
 		REMOTE_PORT: process.env.UDP_REMOTE_PORT || 67,
@@ -18,5 +18,3 @@ const config = {
 		ALGORITHM: 'aes-256-cbc',
 	}
 };
-
-module.exports = config;

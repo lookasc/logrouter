@@ -1,21 +1,32 @@
-const FileCoder = require('./file-coder');
+const RecipientUdpClient = require('./recipient-udp-client');
+const { createReadStream, createWriteStream } = require('fs');
+const { createInterface } = require('readline');
 
-process.send('Dispatcher started');
+class Dispatcher {
 
-process.on('message', (message) => {
-	parseMessage(message);
-});
-
-function parseMessage(message) {
-	if (!message || !message.type) return;
-
-	if (message.type === 'newFile') {
-		new FileCoder(message.fileName)
-			.encryptFile()
-			.then(encryptedFileName => {
-				process.send(`Encrypting of ${encryptedFileName} finished`);
-			});
+	constructor(encryptedFileName) {
+		this.encryptedFileName = encryptedFileName;
+		this.udpClient = new RecipientUdpClient();
 	}
+
+	sendPartedFile() {
+		let lineByLineReader = createInterface({
+			input: createReadStream(this.encryptedFileName),
+			crlfDelay: Infinity
+		});
+
+		lineByLineReader.on('line', (line) => {
+			this.udpClient.send(line);
+		});
+
+		return new Promise((resolve, reject) => {
+			lineByLineReader.on('close', () => {
+				// this.udpClient.close();
+				resolve(this.encryptedFileName);
+			});
+		});
+	}
+
 }
 
-
+module.exports = Dispatcher;

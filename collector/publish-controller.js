@@ -1,5 +1,5 @@
 const { fork } = require('child_process');
-const DISPATCHER_PATH = './dispatcher/dispatcher';
+const DISPATCHER_PATH = './dispatcher/';
 
 class PublishController {
 
