@@ -1,6 +1,7 @@
 const Buffer = require('./buffer');
 const indexGenerator = require('ulid').monotonicFactory();
 const PublishController = require('./publish-controller');
+const { FILES } = require('../config');
 
 class BufferController {
 
@@ -9,6 +10,10 @@ class BufferController {
 		this.activeBuffer = new Buffer(indexGenerator);
 		this.exchangingBufferNow = false;
 		this.publishController = new PublishController();
+
+		setInterval(() => {
+			if (this.activeBuffer.size) this.rolloverBuffer();
+		}, FILES.ACTIVE_BUFFER_MAX_AGE * 1000);
 	}
 
 	write(data) {
