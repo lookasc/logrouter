@@ -12,14 +12,9 @@ var convertSizeStringToByteNumber = function (inputString) {
 
 	let multiplier = 1024;
 	if (sizeChar === 'k') multiplier = 1024;
-	else if (sizeChar === 'm') multiplier = 1048576;
+	else multiplier = 1048576;
 
-	let size = 0;
-	try {
-		size = sizeNumber * multiplier;
-	} catch (error) {
-		console.error(error);
-	}
+	let size = sizeNumber * multiplier;
 	return size;
 };
 
