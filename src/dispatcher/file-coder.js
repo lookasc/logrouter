@@ -1,4 +1,4 @@
-const { ENCRYPT, FILES } = require('../config');
+const { ENCRYPT, FILES } = require('../../config');
 const { createReadStream, createWriteStream } = require('fs');
 const { createInterface } = require('readline');
 const crypto = require('crypto');

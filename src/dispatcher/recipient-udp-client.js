@@ -1,4 +1,4 @@
-const { UDP } = require('../config');
+const { UDP } = require('../../config');
 const dgram = require('dgram');
 const EventEmitter = require('events');
 

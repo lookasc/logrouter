@@ -1,4 +1,4 @@
-const { FILES } = require('../config');
+const { FILES } = require('../../config');
 const { createWriteStream, rename } = require('fs');
 const { convertSizeStringToByteNumber } = require('../utils');
 

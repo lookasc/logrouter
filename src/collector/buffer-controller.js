@@ -1,7 +1,7 @@
 const Buffer = require('./buffer');
 const indexGenerator = require('ulid').monotonicFactory();
 const PublishController = require('./publish-controller');
-const { FILES } = require('../config');
+const { FILES } = require('../../config');
 
 class BufferController {
 

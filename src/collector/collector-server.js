@@ -1,4 +1,4 @@
-const { UDP } = require('../config');
+const { UDP } = require('../../config');
 const dgram = require('dgram');
 const BufferController = require('./buffer-controller');
 
