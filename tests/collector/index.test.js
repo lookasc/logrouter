@@ -1,16 +1,16 @@
-// const chai = require('chai');
-// const expect = chai.expect;
-// const Collector = require('../../src/collector');
+const chai = require('chai');
+const expect = chai.expect;
+const Collector = require('../../src/collector');
 
-// // describe('Collector class', () => {
-// // 	let collector;
+describe('Collector class', () => {
+	let collector;
 
-// // 	beforeEach(() => {
-// // 		collector = new Collector();
-// // 	});
+	before(() => {
+		collector = new Collector();
+	});
 
-// // 	it('should create instance od Collector', () => {
-// // 		expect(collector).to.be.instanceOf(Collector);
-// // 	});
+	it('should create instance of Collector', () => {
+		expect(collector).to.be.instanceOf(Collector);
+	});
 
-// // });
+});

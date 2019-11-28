@@ -3,13 +3,13 @@ const expect = chai.expect;
 const CollectorServer = require('../../src/collector/collector-server');
 const { fork } = require('child_process');
 
-describe('CollectorServer', () => {
+describe('CollectorServer class', () => {
 	let collectorServer;
 	let dummyLogSource;
 	let dummyData = 'dummyData';
 
 	before(() => {
-		dummyLogSource = fork('./tests/collector/collector-server.dummy-log-source');
+		dummyLogSource = fork('./tests/collector/dummy-log-source.test');
 		collectorServer = new CollectorServer();
 	});
 
@@ -34,6 +34,7 @@ describe('CollectorServer', () => {
 
 	after(() => {
 		dummyLogSource.send({ command: 'close' });
+		collectorServer.server.close(() => {});
 	});
 
 });

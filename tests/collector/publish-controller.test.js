@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const PublishController = require('../../src/collector/publish-controller');
 
-describe('PublishController', () => {
+describe('PublishController class', () => {
 	let publishController;
 
 	beforeEach(() => {

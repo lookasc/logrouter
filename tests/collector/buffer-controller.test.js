@@ -4,7 +4,7 @@ const BufferController = require('../../src/collector/buffer-controller');
 const { FILES } = require('../../config');
 const { convertSizeStringToByteNumber } = require('../../src/utils');
 
-describe('BufferController', () => {
+describe('BufferController class', () => {
 	let bufferController;
 	let dummyData = 'dummyData';
 
