@@ -3,6 +3,15 @@ const expect = chai.expect;
 const CollectorServer = require('../../src/collector/collector-server');
 const { fork } = require('child_process');
 
+const dummyBufferController = {
+	activeBuffer: {
+		size: 0
+	},
+	write: function (data) {
+		this.activeBuffer.size += data.length
+	}
+}
+
 describe('CollectorServer class', () => {
 	let collectorServer;
 	let dummyLogSource;
@@ -10,7 +19,9 @@ describe('CollectorServer class', () => {
 
 	before(() => {
 		dummyLogSource = fork('./tests/collector/dummy-log-source.test');
-		collectorServer = new CollectorServer();
+		collectorServer = new CollectorServer({
+			bufferController: dummyBufferController
+		});
 	});
 
 	it('should create instance of CollectorServer', () => {
@@ -33,7 +44,7 @@ describe('CollectorServer class', () => {
 	});
 
 	after(() => {
-		dummyLogSource.send({ command: 'close' });
+		dummyLogSource.kill('SIGINT');
 		collectorServer.server.close(() => {});
 	});
 

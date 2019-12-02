@@ -11,11 +11,5 @@ process.on('message', (message) => {
 		});
 	}
 
-	if (message.command === 'close') {
-		udpClient.close(() => {
-			process.exit(0);
-		});
-	}
-
 });
 

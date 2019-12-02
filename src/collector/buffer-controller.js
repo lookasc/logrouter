@@ -1,15 +1,14 @@
 const Buffer = require('./buffer');
 const indexGenerator = require('ulid').monotonicFactory();
-const PublishController = require('./publish-controller');
 const { FILES } = require('../../config');
 
 class BufferController {
 
-	constructor() {
+	constructor(config) {
 		console.log('Creating new file buffer controller');
 		this.activeBuffer = new Buffer(indexGenerator);
 		this.exchangingBufferNow = false;
-		this.publishController = new PublishController();
+		this.publishController = config.publishController;
 
 		setInterval(() => {
 			if (this.activeBuffer.size) this.rolloverBuffer();

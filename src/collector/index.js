@@ -1,10 +1,8 @@
-const CollectorServer = require('./collector-server');
-
 class Collector {
 
-	constructor() {
+	constructor(config) {
 		console.log('Starting log collector');
-		this.server = new CollectorServer();
+		this.server = config.server;
 	}
 
 }

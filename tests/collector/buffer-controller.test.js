@@ -4,12 +4,18 @@ const BufferController = require('../../src/collector/buffer-controller');
 const { FILES } = require('../../config');
 const { convertSizeStringToByteNumber } = require('../../src/utils');
 
+const dummyPublishController = {
+	dispatch: (fileName) => console.log(`BufferController's dispatched the file ${fileName}`)
+}
+
 describe('BufferController class', () => {
 	let bufferController;
 	let dummyData = 'dummyData';
 
 	beforeEach(() => {
-		bufferController = new BufferController();
+		bufferController = new BufferController({
+			publishController: dummyPublishController
+		});
 	});
 
 	it('should create instance of BufferController', () => {
