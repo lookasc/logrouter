@@ -1,13 +1,12 @@
 const { fork } = require('child_process');
-const DISPATCHER_PATH = './src/dispatcher/';
 
 class PublishController {
 
-	constructor() {
-		this.dispatcherProcess = this.initializeDispatcherProcess();  
+	constructor(config) {
+		this.dispatcherProcess = this.initializeDispatcherProcess(config.dispatcherPath);  
 	}
 
-	initializeDispatcherProcess() {
+	initializeDispatcherProcess(DISPATCHER_PATH) {
 		let dispatcher = fork(DISPATCHER_PATH);
 		dispatcher.on('message', (message) => {
 			console.log(message);
