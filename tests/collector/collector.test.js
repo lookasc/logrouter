@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const Collector = require('../../src/collector');
+const Collector = require('../../src/collector/collector');
 
 const dummyServer = {
 	thisIsServerObj: true 

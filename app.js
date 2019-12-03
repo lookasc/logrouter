@@ -3,7 +3,7 @@ const DISPATCHER_PATH = './src/dispatcher/';
 const PublishController = require('./publish-controller');
 const BufferController = require('./buffer-controller');
 const CollectorServer = require('./collector-server');
-const Collector = require('./src/collector');
+const Collector = require('./src/collector/collector');
 
 var publishController = new PublishController({
 	dispatherPath: DISPATCHER_PATH
