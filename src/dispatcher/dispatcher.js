@@ -1,12 +1,11 @@
-const RecipientUdpClient = require('./recipient-udp-client');
 const { createReadStream } = require('fs');
 const { createInterface } = require('readline');
 
 class Dispatcher {
 
-	constructor(encryptedFileName) {
-		this.encryptedFileName = encryptedFileName;
-		this.udpClient = new RecipientUdpClient();
+	constructor(config) {
+		this.encryptedFileName = config.encryptedFileName;
+		this.udpClient = config.recipientUdpClient;
 	}
 
 	sendPartedFile() {

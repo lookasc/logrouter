@@ -1,4 +1,5 @@
 const FileCoder = require('./file-coder');
+const RecipientUdpClient = require('./recipient-udp-client');
 const Dispatcher = require('./dispatcher');
 const { unlink } = require('fs');
 
@@ -12,7 +13,11 @@ process.on('message', (message) => {
 		new FileCoder(storedFileName)
 			.encryptFile()
 			.then(encryptedFileName => {
-				return new Dispatcher(encryptedFileName).sendPartedFile();
+				let config = {
+					encryptedFileName: encryptedFileName,
+					recipientUdpClient: new RecipientUdpClient()
+				}
+				return new Dispatcher(config).sendPartedFile();
 			})
 			.then(encryptedFileName => {
 				deleteProcessedFiles([storedFileName, encryptedFileName]);
