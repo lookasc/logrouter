@@ -6,7 +6,7 @@ const { convertSizeStringToByteNumber } = require('../../src/utils');
 
 const dummyPublishController = {
 	dispatch: (fileName) => console.log(`BufferController's dispatched the file ${fileName}`)
-}
+};
 
 describe('BufferController class', () => {
 	let bufferController;

@@ -8,9 +8,9 @@ const dummyBufferController = {
 		size: 0
 	},
 	write: function (data) {
-		this.activeBuffer.size += data.length
+		this.activeBuffer.size += data.length;
 	}
-}
+};
 
 describe('CollectorServer class', () => {
 	let collectorServer;

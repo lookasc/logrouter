@@ -16,7 +16,7 @@ process.on('message', (message) => {
 				let config = {
 					encryptedFileName: encryptedFileName,
 					recipientUdpClient: new RecipientUdpClient()
-				}
+				};
 				return new Dispatcher(config).sendPartedFile();
 			})
 			.then(encryptedFileName => {

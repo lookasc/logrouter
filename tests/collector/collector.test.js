@@ -4,7 +4,7 @@ const Collector = require('../../src/collector/collector');
 
 const dummyServer = {
 	thisIsServerObj: true 
-}
+};
 
 describe('Collector class', () => {
 	let collector;

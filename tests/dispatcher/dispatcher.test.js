@@ -7,7 +7,7 @@ const Dispatcher = require('../../src/dispatcher/dispatcher');
 const dummyUdpClient = {
 	sentLines: 0,
 	isLocked: false,
-	send: function (line) {
+	send: function () {
 		this.sentLines++;
 	},
 	lockInput: function () {
