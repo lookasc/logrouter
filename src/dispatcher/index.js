@@ -5,26 +5,26 @@ const { unlink } = require('fs');
 
 process.send('Dispatcher started');
 
-process.on('message', (message) => {
+process.on('message', async (message) => {
 	let receivedNewFile = (message && message.type === 'newFile');
 	let storedFileName = message.fileName;
 
 	if (receivedNewFile) {
-		new FileCoder(storedFileName)
-			.encryptFile()
-			.then(encryptedFileName => {
-				let config = {
-					encryptedFileName: encryptedFileName,
-					recipientUdpClient: new RecipientUdpClient()
-				};
-				return new Dispatcher(config).sendPartedFile();
-			})
-			.then(encryptedFileName => {
-				deleteProcessedFiles([storedFileName, encryptedFileName]);
-			})
-			.catch(error => {
-				process.send(`Dispatcher error: ${error}`);
-			});
+		try {
+			let fileCoder = new FileCoder(storedFileName);
+			let encryptedFileName = await fileCoder.encryptFile();
+	
+			let dispatcherConfig = {
+				encryptedFileName: encryptedFileName,
+				recipientUdpClient: new RecipientUdpClient()
+			};
+			let dispatcher = new Dispatcher(dispatcherConfig);
+			encryptedFileName = await dispatcher.sendPartedFile();
+	
+			deleteProcessedFiles([storedFileName, encryptedFileName]);
+		} catch (error) {
+			process.send(`Dispatcher error: ${error}`);
+		}
 	}
 });
 
