@@ -15,7 +15,7 @@ var bufferController = new FileBuffer({
 });
 
 bufferController.on('bufferExchange', e => {
-  publishController.dispatch(e.fileName);
+	publishController.dispatch(e.fileName);
 });
 
 var collectorServer = new CollectorServer({
