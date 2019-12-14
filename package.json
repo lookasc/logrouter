@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "filebuffer": "^1.0.2",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
@@ -18,8 +19,8 @@
     "lint": "eslint \"./**/*.js\"",
     "lint-fix": "eslint --fix \"./**/*.js\"",
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha **/*.test.js --bail --timeout 10000 --exit && sleep 0.5 && rm -r ./data/*",
-		"coverage": "nyc report --reporter=text-lcov | coveralls",
-		"build": "docker build --label logrouter --tag logrouter ."
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "build": "docker build --label logrouter --tag logrouter ."
   },
   "repository": {
     "type": "git",
