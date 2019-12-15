@@ -25,6 +25,15 @@ describe('PublishController class', () => {
 		publishController.dispatch(dummyFileName);
 	});
 
+	it('should reinitialize dispatcher', (done) => {
+		let pid = publishController.dispatcherProcess.pid;
+		publishController.reinitializeDispatcherProcess();
+		setTimeout(() => {
+			expect(pid).to.not.equal(publishController.dispatcherProcess.pid);
+			done();
+		}, 20);
+	});
+
 	afterEach(() => {
 		publishController.dispatcherProcess.kill('SIGINT');
 	});

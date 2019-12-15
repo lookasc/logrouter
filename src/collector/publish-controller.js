@@ -3,7 +3,8 @@ const { fork } = require('child_process');
 class PublishController {
 
 	constructor(config) {
-		this.dispatcherProcess = this.initializeDispatcherProcess(config.dispatcherPath);  
+		this.dispatcherPath = config.dispatcherPath;
+		this.dispatcherProcess = this.initializeDispatcherProcess(this.dispatcherPath);  
 	}
 
 	initializeDispatcherProcess(DISPATCHER_PATH) {
@@ -21,9 +22,9 @@ class PublishController {
 	}
 
 	reinitializeDispatcherProcess() {
-		if (this.dispatcherProcess && !this.dispatcherProcess.killed) {
+		if (!!this.dispatcherProcess && !this.dispatcherProcess.killed) {
 			this.dispatcherProcess.kill('SIGINT');
-			this.dispatcher = this.initializeDispatcherProcess(config.dispatcherPath);  
+			this.dispatcherProcess = this.initializeDispatcherProcess(this.dispatcherPath);  
 		}
 	}
 
