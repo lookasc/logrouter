@@ -6,7 +6,7 @@ const dummyDispatcherPath = './tests/collector/dummy-dispatcher.test.js';
 describe('PublishController class', () => {
 	let publishController;
 
-	before(() => {
+	beforeEach(() => {
 		publishController = new PublishController({
 			dispatcherPath: dummyDispatcherPath
 		});
@@ -25,7 +25,7 @@ describe('PublishController class', () => {
 		publishController.dispatch(dummyFileName);
 	});
 
-	after(() => {
+	afterEach(() => {
 		publishController.dispatcherProcess.kill('SIGINT');
 	});
 
