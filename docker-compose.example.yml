@@ -9,7 +9,7 @@ services:
   loop-alpine:
     image: alpine:latest
     container_name: log-generator
-    command: /bin/sh -c "while true; do sleep 0.1; echo 'test message'; done;"
+    command: /bin/sh -c "while true; do sleep 0.001; echo 'test message'; done;"
     logging:
       driver: gelf
       options:
@@ -24,12 +24,16 @@ services:
   logrouter:
     image: logrouter
     container_name: logrouter
+    volumes:
+      - ./logrouter-data:/usr/src/app/data
     environment: 
       - UDP_LISTEN_PORT=22222
       - UDP_REMOTE_PORT=33333
       - UDP_REMOTE_HOST=some.hostname.com.or.ip.address
       - ACTIVE_BUFFER_MAX_SIZE=1M # {number}k | {number}M
       - ACTIVE_BUFFER_MAX_AGE=10  # time in seconds
+      - ENCRYPT_DATA=true
+      - ENCRYPT_PASSWORD=yourSuperSecretPassword
     ports: 
       - 22222:22222/udp
       - 33333:33333/udp

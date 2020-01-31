@@ -2,7 +2,7 @@ const FileCoder = require('./file-coder');
 const RecipientUdpClient = require('./recipient-udp-client');
 const Dispatcher = require('./dispatcher');
 const { deleteFiles, resolveHostname } = require('../utils');
-const { UDP } = require('../../config');
+const { UDP, ENCRYPT } = require('../../config');
 
 process.send(`Dispatcher: Starting with process PID=${process.pid}...`);
 
@@ -23,15 +23,23 @@ function registerMessageEventHandler () {
 
 		if (receivedNewFile) {
 			try {
-				let fileCoder = new FileCoder(storedFileName);
-				let encryptedFileName = await fileCoder.encryptFile();
+				let fileCoder, encryptedFileName;
+				let createdFiles = [storedFileName];
+				// encrypting
+				if (ENCRYPT.ENABLED === 'true') {
+					fileCoder = new FileCoder(storedFileName);
+					encryptedFileName = await fileCoder.encryptFile();
+					createdFiles.push(encryptedFileName);
+				}
+				// dispatching
 				let dispatcherConfig = {
-					encryptedFileName: encryptedFileName,
+					fileToDispatch: !!encryptedFileName ? encryptedFileName : storedFileName,
 					recipientUdpClient: new RecipientUdpClient()
 				};
 				let dispatcher = new Dispatcher(dispatcherConfig);
-				encryptedFileName = await dispatcher.sendPartedFile();
-				deleteFiles([storedFileName, encryptedFileName]);
+				await dispatcher.sendPartedFile();
+				// cleaning
+				deleteFiles(createdFiles);
 			} catch (error) {
 				sendErrorToMainProcess(error);
 			}

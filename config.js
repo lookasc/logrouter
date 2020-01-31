@@ -14,7 +14,7 @@ const config = {
 		ACTIVE_BUFFER_MAX_AGE: process.env.ACTIVE_BUFFER_MAX_AGE || 60
 	},
 	ENCRYPT: {
-		ENABLED: process.env.ENCRYPT_DATA || true,
+		ENABLED: process.env.ENCRYPT_DATA || 'true',
 		PASSWORD: process.env.ENCRYPT_PASSWORD || 'testPass',
 		PASSWORD_HASH_ALGHORITM: 'sha256',
 		ALGORITHM: 'aes-256-cbc',

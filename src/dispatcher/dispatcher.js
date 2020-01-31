@@ -4,13 +4,13 @@ const { createInterface } = require('readline');
 class Dispatcher {
 
 	constructor(config) {
-		this.encryptedFileName = config.encryptedFileName;
+		this.fileToDispatch = config.fileToDispatch;
 		this.udpClient = config.recipientUdpClient;
 	}
 
 	sendPartedFile() {
 		let lineByLineReader = createInterface({
-			input: createReadStream(this.encryptedFileName),
+			input: createReadStream(this.fileToDispatch),
 			crlfDelay: Infinity
 		});
 
@@ -24,7 +24,7 @@ class Dispatcher {
 
 		return new Promise(resolve => {
 			this.udpClient.onAllItemsSent(() => {
-				resolve(this.encryptedFileName);
+				resolve(this.fileToDispatch);
 			});
 		});
 	}

@@ -30,7 +30,7 @@ describe('Dispatcher class', () => {
 		fs.writeFileSync(dummyName, dummyData);
 
 		dispatcher = new Dispatcher({
-			encryptedFileName: dummyName,
+			fileToDispatch: dummyName,
 			recipientUdpClient: dummyUdpClient
 		});
 	});
@@ -41,8 +41,8 @@ describe('Dispatcher class', () => {
 
 	it('should send 2 lines of data and resolve with file name', (done) => {
 		dispatcher.sendPartedFile()
-			.then((encryptedFileName) => {
-				expect(encryptedFileName).to.equal(dummyName);
+			.then((fileToDispatch) => {
+				expect(fileToDispatch).to.equal(dummyName);
 				expect(dispatcher.udpClient.sentLines).to.equal(2);
 				expect(dispatcher.udpClient.isLocked).to.be.true;
 				done();
