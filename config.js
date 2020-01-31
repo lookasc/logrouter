@@ -2,7 +2,8 @@ const config = {
 	UDP: {
 		LISTEN_PORT: process.env.UDP_LISTEN_PORT || 67,
 		REMOTE_PORT: process.env.UDP_REMOTE_PORT || 67,
-		REMOTE_HOST: process.env.UDP_REMOTE_HOST || 'localhost'
+		REMOTE_HOST: process.env.UDP_REMOTE_HOST || 'localhost',
+		REMOTE_HOST_IP: ''
 	},
 	FILES: {
 		DIR: process.env.STORE_DIR || './data/',

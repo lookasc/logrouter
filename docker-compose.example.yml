@@ -8,8 +8,7 @@ services:
   # -------------------------------------------------------
   loop-alpine:
     image: alpine:latest
-    container_name: loop-alpine
-    command: /bin/sh -c "while true; do sleep 0.1; echo 'msg'; done;"
+    command: /bin/sh -c "while true; do sleep 0.001; echo 'msg'; done;"
     logging:
       driver: gelf
       options:
@@ -28,7 +27,11 @@ services:
       - ./logrouter-data:/usr/src/app/data
     environment: 
       - UDP_LISTEN_PORT=22222
+      - UDP_REMOTE_PORT=33333
+      - UDP_REMOTE_HOST=54.37.77.224
+      - ACTIVE_BUFFER_MAX_SIZE=1M
     ports: 
       - 22222:22222/udp
+      - 33333:33333/udp
     networks: 
       - net

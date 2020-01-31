@@ -15,7 +15,7 @@ class RecipientUdpClient {
 		if (this.isInputClosed) return;
 
 		this.messageCounter++;
-		this.udpClient.send(message, 0, message.length, UDP.REMOTE_PORT, UDP.REMOTE_HOST, (err) => {
+		this.udpClient.send(message, 0, message.length, UDP.REMOTE_PORT, UDP.REMOTE_HOST_IP, (err) => {
 			if (err) process.send(err);
 			if (--this.messageCounter === 0 && this.isInputClosed) {
 				this.event.emit('allItemsSent');
