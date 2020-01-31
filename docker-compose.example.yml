@@ -5,16 +5,17 @@ networks:
 
 services:
 
-  # -------------------------------------------------------
+  # loop-alpine generates logs each milisecond
   loop-alpine:
     image: alpine:latest
-    command: /bin/sh -c "while true; do sleep 0.001; echo 'msg'; done;"
+    container_name: log-generator
+    command: /bin/sh -c "while true; do sleep 0.1; echo 'test message'; done;"
     logging:
       driver: gelf
       options:
         gelf-address: udp://localhost:22222
         gelf-compression-type: none
-        tag: loop
+        tag: test-loop
     depends_on: 
       - logrouter
     networks: 
@@ -23,13 +24,12 @@ services:
   logrouter:
     image: logrouter
     container_name: logrouter
-    volumes:
-      - ./logrouter-data:/usr/src/app/data
     environment: 
       - UDP_LISTEN_PORT=22222
       - UDP_REMOTE_PORT=33333
-      - UDP_REMOTE_HOST=54.37.77.224
-      - ACTIVE_BUFFER_MAX_SIZE=1M
+      - UDP_REMOTE_HOST=some.hostname.com.or.ip.address
+      - ACTIVE_BUFFER_MAX_SIZE=1M # {number}k | {number}M
+      - ACTIVE_BUFFER_MAX_AGE=10  # time in seconds
     ports: 
       - 22222:22222/udp
       - 33333:33333/udp

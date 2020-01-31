@@ -63,3 +63,4 @@ typings/
 #
 data
 logrouter-data
+docker-compose.test.yml

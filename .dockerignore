@@ -5,3 +5,4 @@ LICENSE
 README.md
 data
 logrouter-data
+docker-compose.test.yml
