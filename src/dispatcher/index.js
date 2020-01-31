@@ -4,7 +4,7 @@ const Dispatcher = require('./dispatcher');
 const { deleteFiles, resolveHostname } = require('../utils');
 const { UDP } = require('../../config');
 
-process.send('Dispatcher: Starting...');
+process.send(`Dispatcher: Starting with process PID=${process.pid}...`);
 
 resolveHostname(UDP.REMOTE_HOST)
 	.then(setIpAddress)
@@ -20,7 +20,7 @@ function registerMessageEventHandler () {
 	process.on('message', async (message) => {
 		let receivedNewFile = (message && message.type === 'newFile');
 		let storedFileName = message.fileName;
-	
+
 		if (receivedNewFile) {
 			try {
 				let fileCoder = new FileCoder(storedFileName);

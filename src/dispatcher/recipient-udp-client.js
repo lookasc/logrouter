@@ -29,6 +29,7 @@ class RecipientUdpClient {
 
 	lockInput() {
 		this.isInputClosed = true;
+		if (this.messageCounter === 0) this.event.emit('allItemsSent');
 	}
 
 	onAllItemsSent(callback) {
