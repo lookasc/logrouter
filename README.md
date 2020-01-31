@@ -2,17 +2,60 @@
 Routing logs from docker containers using GELF driver through UDP.
 
 # About
-This docker image provides a way to securly transfer all docker logs by UDP using GELF driver. All logs data are encrypted 
+This docker image provides a way to securely transfer all docker logs by UDP using GELF driver. All logs data might be encrypted and send to a remote log server for further analysis.
 
-# Usage
-### Writing to buffer
+# Example usage
 
-```js
-const { FileBuffer } = require('filebuffer');
+```yml
+version: "3"
 
-const fb = new FileBuffer();
+networks:
+  net:
 
-fb.write('Data to write'); // write() method will append \n characted at the end
+services:
+
+  # loop-alpine generates logs each milisecond
+  loop-alpine:
+    image: alpine:latest
+    container_name: log-generator
+    command: /bin/sh -c "while true; do sleep 0.001; echo 'test message'; done;"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://localhost:22222 # specify proper port
+        gelf-compression-type: none
+        tag: test-loop
+    depends_on: 
+      - logrouter
+    networks: 
+      - net
+
+  logrouter:
+    image: logrouter
+    container_name: logrouter
+    volumes:
+      - ./logrouter-data:/usr/src/app/data
+    environment: 
+      # all containers from compose file should write to this port
+      - UDP_LISTEN_PORT=22222
+      # port of remote log server
+      - UDP_REMOTE_PORT=33333
+      # hostname of remote log server
+      - UDP_REMOTE_HOST=some.hostname.com.or.ip.address
+      # max buffer file size - will be send to log server when is larger
+      - ACTIVE_BUFFER_MAX_SIZE=1M # {number}k | {number}M
+      # buffer will be send to log server after this time
+      - ACTIVE_BUFFER_MAX_AGE=10  # time in seconds
+      # data encryption may be enabled/disabled here
+      - ENCRYPT_DATA=true
+      # password used to encrypt data
+      - ENCRYPT_PASSWORD=yourSuperSecretPassword
+    ports: 
+      # your ports
+      - 22222:22222/udp
+      - 33333:33333/udp
+    networks: 
+      - net
 ```
 
 
