@@ -4,8 +4,10 @@ Routing logs from docker containers using GELF driver through UDP.
 # About
 This docker image provides a way to securely transfer all docker logs by UDP using GELF driver. All logs data might be encrypted and send to a remote log server for further analysis.
 
-# Example usage
+### Important note
+`logrouter` is only one part of a larger project which is not done yet. There's still a lack of two major parts: log server and log viewer.
 
+# Example usage
 ```yml
 version: "3"
 
@@ -31,10 +33,8 @@ services:
       - net
 
   logrouter:
-    image: logrouter
+    image: lookasc/logrouter:latest
     container_name: logrouter
-    volumes:
-      - ./logrouter-data:/usr/src/app/data
     environment: 
       # all containers from compose file should write to this port
       - UDP_LISTEN_PORT=22222
